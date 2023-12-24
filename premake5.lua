@@ -6,7 +6,6 @@ workspace "RayTracer"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-
     project "Core"
         location "Core"
         kind "StaticLib"
@@ -17,6 +16,7 @@ workspace "RayTracer"
         targetdir ("bin/" .. outputdir .. "/%{prj.name}")
         objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+        
 
         files
         {
@@ -28,27 +28,35 @@ workspace "RayTracer"
         includedirs
         {
             "%{prj.name}/src",
+            "%{prj.name}/vendor/GLFW/include",
+            "%{prj.name}/vendor/Vulkan/include",
+            "%{prj.name}/vendor/glm",
         }
 
         links
         {
-           
+           "glfw3_mt.lib",
+           "vulkan-1.lib",
         }
 
         filter "system:windows"
             systemversion "latest"
+            libdirs "%{prj.name}/vendor/GLFW/lib-vc2022"
+            libdirs "%{prj.name}/vendor/Vulkan/lib"
 
             defines
             {
+                "GLFW_INCLUDE_VULKAN",
+                "_GLFW_WIN32",
             }          
 
         filter "configurations:Debug"
-            defines "RV_DEBUG"
+            defines "CONF_DEBUG"
             runtime "Debug"
             symbols "On"
 
         filter "configurations:Release"
-            defines "RV_RELEASE"
+            defines "CONF_RELEASE"
             runtime "Release"
             optimize "On"
 
@@ -74,27 +82,33 @@ workspace "RayTracer"
         includedirs
         {
             "Core/src",
+            "Core/vendor/GLFW/include",
+            "Core/vendor/Vulkan/include",
+            "Core/vendor/glm",
         }
     
         links
         {
-            "Core"
+            "Core",
+            "glfw3_mt.lib",
+            "vulkan-1.lib",
         }
     
         filter "system:windows"
-            
             systemversion "latest"
+            libdirs "Core/vendor/GLFW/lib-vc2022"
+            libdirs "Core/vendor/Vulkan/lib"
     
             defines
             {
             }
     
         filter "configurations:Debug"
-            defines "RV_DEBUG"
+            defines "CONF_DEBUG"
             runtime "Debug"
             symbols "On"
     
         filter "configurations:Release"
-            defines "RV_RELEASE"
+            defines "CONF_RELEASE"
             runtime "Release"
             optimize "On"

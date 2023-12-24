@@ -1,8 +1,19 @@
-#include "Core.h"
-
 #include <iostream>
+#include "Application.h"
+
 
 int main()
 {
-	Core::Print();
+	Application App;
+	while (!App.IsClose())
+	{
+		//Renderer::Begin();
+
+		//Renderer::DrawTriangle();
+		//App.AddSphere();
+		//App.AddLightSource();
+
+	}
+	
+    return 0;
 }
